@@ -155,11 +155,9 @@ class Chord {
                             if (index > -1) {
                                 this.chord_nodes[k].data[i].splice(index, 1);
                             }
-                            // delete this.chord_nodes[k].data[i]; 
                             return [true, k];
                         }
                 }
-
             } else return [false, "No data available"];
         } else {
             var node = this.find_successor(k);
@@ -175,14 +173,9 @@ class Chord {
                                 if (index > -1) {
                                     node.data[i].splice(index, 1);
                                 }
-                                // delete node.data[k]; return [true, node.id];
-                                // delete this.chord_nodes[k].data[k]; return [true, k];
                                 return [true, k];
                             }
-
                     }
-                    // delete node.data[k]; return [true, node.id];
-
                 } else return [false, "No data available"];
             }
         }
@@ -214,8 +207,8 @@ class Chord {
 
     }
 
+    
     find_successor(k) {
-
         var counter = k
         while (counter < this.chord_nodes.length - 1) {
             counter = counter + 1;
@@ -233,7 +226,6 @@ class Chord {
     }
 
     find_predecessor(k) {
-
         var counter = k
         while (counter > 0) {
             counter = counter - 1;
@@ -277,7 +269,6 @@ class Chord {
     }
 
     node_pre_nodes_index(predecessor, current_node) {
-
         var count = predecessor.id + 1;
         var list = [];
         if (predecessor.id != current_node.id) {
@@ -295,13 +286,12 @@ class Chord {
 }
 
 function isPowerOf_2(number) {
-
     return (number & (number - 1)) == 0;
 }
 
 
 function sha1() {
-
+    // future implementation
     // given any value this function will compute sha1 
 }
 
