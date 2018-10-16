@@ -6,7 +6,7 @@ This project is written in Javascript, please make sure your browser is capable 
 
 ### Steps to execute the project: 
 - Clone this repo `git clone https://github.com/dulalsaurab/ChordSystem.git`
-- `cd ChordSystme` Run index.html file in the browser - double click should by default open it on the default browser
+- `cd ChordSystme` run index.html file in the browser - double click should by default open it on the default browser
 - Once you open the project on the browser, you will see a 16 bit chord system
 
 ### Online Source Code
