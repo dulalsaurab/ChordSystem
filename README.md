@@ -1,5 +1,5 @@
 
-## 4 bit 16 nodes Chord System
+## 4 bit - 16 nodes Chord System
 
 #### Prerequisite 
 This project is written in Javascript, please make sure your browser is capable of executing javascript. 
