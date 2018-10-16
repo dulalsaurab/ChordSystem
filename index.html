@@ -4,8 +4,11 @@
 
 <!-- bootstrap sections -->
 <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.css">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
 <script type="text/javascript" src="./notify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.js"></script>
+
 
 
 
@@ -43,8 +46,8 @@ text.node {
   font-size: 10px;
 }
 path.edge {
-  stroke-width: 1px;
-  stroke: #CCC;
+  stroke-width: 1.5px;
+  stroke: green;
   fill: none;
 }
 </style>
@@ -85,10 +88,7 @@ path.edge {
             
                 </div>
                 <hr />
-
-
-                
-                <div class=container pull-center" style="margin: 10px;">
+                <div class=container pull-center" style="margin: 0px;">
                     <h4 style="margin-left: 15px;"> Delete data, enter previously stored data</h4>
                     <form class="form-inline">
                       <div class="form-group mx-sm-3 mb-2">
@@ -100,22 +100,54 @@ path.edge {
                     </form>
                 </div>
                 <hr />
+                <div class=container pull-center" style="margin: 0px;">
+                      <form class="form-inline">
+                      <div class="form-group mx-sm-3 mb-2">
+                        <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+                        <input type="text" class="form-control" id="search_text" placeholder="some text.....">
+                      </div>
+                        <button type="button" class="btn btn-primary" onclick="search_data()">Search Data</button>
+                    </form>  
+                </div>
+                <hr />
+                <table class="table" id="table">
+                    <thead>
+                        <tr>
+                            <th data-field="no_de">Node [id]</th>
+                            <th data-field="responsible_of">Carries Data Of [node id]</th>
+                            <th data-field="_successor">Data/DataObj</th>
+                        </tr>
+                    </thead>
+                </table>
+                <script>
+                    $('#table').bootstrapTable({});
+                    function load(){
+                        var data = [];
+                        for (var node in _chord.chord_nodes)
+                        {   
+                            if(_chord.chord_nodes[node].predecessor != null){
+                                var temp = []
+                                for ( var datum in _chord.chord_nodes[node].data){
+                                    temp.push(_chord.chord_nodes[node].data[datum]);
+                                }
+                                data.push({
+                                    no_de: _chord.chord_nodes[node].name+" ["+_chord.chord_nodes[node].id+"]",
+                                    responsible_of: _chord.node_pre_nodes_index(_chord.chord_nodes[node].predecessor, _chord.chord_nodes[node]),
+                                    _successor: temp
+                                })
+                            }
+                            console.log(_chord.chord_nodes[node]);
+                        }
+                        $('#table').bootstrapTable("load", data);
+                    }
+                </script>
 
+            
     <!-- </div> -->
   <!-- </div> -->
 <div class="col-md-1">
 </div>
 </div>
-    
-<!-- <div class="row">
-<div class="col-md-1"></div>
-<div class="col-md-6" style="border:1px solid #cecece;" style="margin: 5px;">
-    
-    <h3 class="text-center"><i>"A 4 bit chord system."</i></h3>
-
-</div>
-</div> -->
-
 </div>
 
 
@@ -139,8 +171,17 @@ function compute_hash (s) {
     return (h^h>>>17)>>>0;
 };
 
-function find_data(){
+function search_data(){
 
+    var data = $("#search_text").val();
+    if (data) {
+        var index = compute_hash(data)%16;
+        messaage = _chord.search_data(index, data)
+        if (messaage[0] == true) $.notify(messaage[1], "success");
+        else $.notify(messaage[1]);
+        $("#search_text").val("");
+    }
+    else alert("empty data field");
 
 
 }
@@ -154,6 +195,7 @@ function delete_data(){
         $("#text").val("");
     }
     else alert("empty data field");
+    load();
 }
 
 function add_data(data){
@@ -163,21 +205,39 @@ function add_data(data){
         var index = compute_hash(data)%16;
         messaage = _chord.add_data(index, data)
         if (messaage[0] == true) $.notify("Data successfully added to node "+messaage[1], "success");
-        else $.notify("No node available to add data, please add node first");
+        else $.notify(messaage[1]);
         $("#text").val("");
     }
     else alert("empty data field");
-
-
+    load();
 }
 
+function get_random_num(type){
+    // this function will return random number between 0 to 16 
+    // get the list of available id's of node
+
+    var list = _chord.available_node_id();
+    console.log(list[0], list[1]);
+    if (type == "add"){
+            
+        return list[1][Math.floor(Math.random() * list[1].length)];
+        // while(true){
+        //     var temp = Math.floor((Math.random() * 16) + 0);
+        //     if (list.includes(temp)) continue; 
+        //     else return temp;    
+        // }
+    }
+    else if (type == "delete"){
+        return list[0][Math.floor(Math.random() * list[0].length)];
+    }
+}
 
 function deleteNode(a){
 
     console.log("Deleting random node");
 
     var x;
-    if (a==0) x = Math.floor((Math.random() * 16) + 0);
+    if (a==0) x = get_random_num("delete");
     else if (a==1) 
         if ($("#node_index").val()=='') {
                 alert("Node index not provided");
@@ -204,7 +264,7 @@ function resset(){
         _chord.delete_node(i)
     }
     $.notify(
-      "Chord resset sucessfully, all data and nodes are deleted", 
+      "Chord reset successfully, all data and nodes are deleted", 
       // { position:"right" }
     );
     updateData();    
@@ -212,7 +272,8 @@ function resset(){
 function addNode(a){
 
     var x;
-    if (a==0) x = Math.floor((Math.random() * 16) + 0);
+    if (a==0) x = get_random_num("add");
+
     else if (a==1) 
         if ($("#node_index").val()=='') {
                 alert("Node index not provided");
@@ -224,12 +285,6 @@ function addNode(a){
                 x = parseInt(x);
                 if (x > 15) {alert("Invalid!! Index greater than 15"); return}
             }
-
-
-
-    // var x = Math.floor((Math.random() * 16) + 0);
-    // console.log(x);
-    
     var messaage = _chord.add_node(x);
 
     if (messaage[0] == 1) $.notify(messaage[1], "success");
@@ -260,6 +315,7 @@ function updateData() {
 
     // Create the layout
     // d3.select(".graph").selectAll("text").remove()
+    load();
     $(".graph").empty(); //clearing the previous content 
     d3.select(".graph").selectAll("g > *").remove()
     var data = getData(); 
@@ -288,7 +344,7 @@ function updateData() {
       .data(edges)
       .enter()
         .append('path')
-        .style("stroke-dasharray","5,5") //this is to make dotted links
+        // .style("stroke-dasharray","5,5") //this is to make dotted links
         .classed('edge', true)
         .attr('d', circleGraph.line);
 

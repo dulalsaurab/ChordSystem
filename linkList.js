@@ -121,11 +121,16 @@ class Chord {
     add_data(k, data){
 
         // check if node exists in k, if not find successor of k and add data to it
+        var info = this.search_data(k, data);
+        if(info[0] == true){
+            return [false, "Data already exists"]; 
+        }
+
         var node; 
         if (this.chord_nodes[k].exist == 1) node = this.chord_nodes[k];
         else node = this.find_successor(k);
 
-        if (node==null) return [false];
+        if (node==null) return [false, "No node available to add data, please add node first"];
 
         if (node.data[k]) node.data[k].push(data); 
         else if (typeof(data) == 'object') {//node.data.push(data);
@@ -141,17 +146,81 @@ class Chord {
 
         if(this.chord_nodes[k].exist == 1) {
             console.log(this.chord_nodes[k].data[k]);
-            if (this.chord_nodes[k].data[k] !=null) {delete this.chord_nodes[k].data[k]; return [true, k]}
+            if (this.chord_nodes[k].data[k] !=null) {
+            
+                for (var i in this.chord_nodes[k].data)
+                {
+                    if(this.chord_nodes[k].data[i])
+                    if (this.chord_nodes[k].data[i].includes(data))
+                        {
+
+                            var index = this.chord_nodes[k].data[i].indexOf(data);
+                            if (index > -1) {
+                              this.chord_nodes[k].data[i].splice(index, 1);
+                            }
+                            // delete this.chord_nodes[k].data[i]; 
+                            return [true, k];
+                        }
+                }
+
+            }
             else return [false, "No data available"];
         }
         else {
             var node = this.find_successor(k);
             if (node==null) return [false, "No node available"];
             else {
-                if (node.data[k] !=null) {delete node.data[k]; return [true, node.id];} 
+                if (node.data[k] !=null) {
+                
+                    for (var i in node.data)
+                    {
+                        if(node.data[i]) 
+                        if (node.data[i].includes(data))
+                            {
+
+                                var index = node.data[i].indexOf(data);
+                                if (index > -1) {
+                                  node.data[i].splice(index, 1);
+                                }
+                                // delete node.data[k]; return [true, node.id];
+                                // delete this.chord_nodes[k].data[k]; return [true, k];
+                            return [true, k];
+                            }
+
+                    }
+                    // delete node.data[k]; return [true, node.id];
+
+                } 
                 else return [false, "No data available"];
             }
         }
+        return [false, "Data not found"]
+    }
+
+    search_data(k, data){
+
+        var current_node_id = k; 
+        
+        if(this.chord_nodes[k].exist == 1) current_node_id = k;
+        else current_node_id = this.find_successor(k).id;
+
+        var flag = current_node_id; 
+
+        while(true){
+            var data_list = this.chord_nodes[current_node_id].data[k];
+
+            for (var i in this.chord_nodes[current_node_id].data)
+                {
+                    if (this.chord_nodes[current_node_id].data[i].includes(data))
+                        return [true, data+" is found in node "+current_node_id]
+                }
+            current_node_id = this.chord_nodes[current_node_id].successor.id;
+            
+            if (flag == current_node_id){
+                return [false, data+" is not found in any node "]
+            }
+        }
+
     }
 
     find_successor(k){
@@ -201,6 +270,21 @@ class Chord {
         }
         return node_count;
     }
+    available_node_id(){
+        var counter = 0;
+        var node_list = []
+        var empty_list = []
+        while (counter < this.chord_nodes.length){
+            if (this.chord_nodes[counter].exist == 1){
+                node_list.push(this.chord_nodes[counter].id);
+            }
+            else empty_list.push(counter);
+
+            counter++;
+        }
+        return [node_list, empty_list];
+    }
+
     node_pre_nodes_index (predecessor, current_node){
         
         var count = predecessor.id+1;
@@ -240,12 +324,16 @@ if (!isPowerOf_2(16)){
 
 // **************************** This section is used for test case ********************* 
 // const chord = new Chord(16);
-// console.log(chord.chord_nodes);
+// // // console.log(chord.chord_nodes);
 // chord.add_node(15);
-// console.log(chord.chord_nodes);
+// // // console.log(chord.chord_nodes);
 // chord.add_data(2, "me");
+// chord.add_data(2, "gopal");
 // chord.add_data(3, "Ram");
-// chord.add_data(4, "Shyam");
+// // console.log(chord.chord_nodes[15].data);
+// console.log(chord.delete_data(2, "me"));
+// console.log(chord.chord_nodes[15].data);
+// // chord.add_data(4, "Shyam");
 // chord.add_data(7, "for seven");
 // console.log(2, chord.chord_nodes[2].data)
 // chord.add_node(7);
