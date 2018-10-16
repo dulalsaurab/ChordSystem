@@ -1,395 +1,367 @@
+<!-- // @author: Saurab Dulal  -->
 <!DOCTYPE html>
 <meta charset="utf-8">
-
-
 <!-- bootstrap sections -->
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.css">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
 <script type="text/javascript" src="./notify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.js"></script>
-
-
-
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.css">
-
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-
-
-  
 <style>
-
-body { font: 12px Arial;}
-
-svg {
-  display: block;
-  margin: 10px auto 0;
-}
-circle.main-circle {
-  stroke: #DDD;
-  stroke-width: 6px;
-  fill: none;
-}
-circle.node {
-    /*default color of a node */
-  fill: #bec6c6;
-}
-
-text.node {
-  font-size: 10px;
-}
-path.edge {
-  stroke-width: 1.5px;
-  stroke: green;
-  fill: none;
-}
+   body { font: 12px Arial;}
+   svg {
+   display: block;
+   margin: 10px auto 0;
+   }
+   circle.main-circle {
+   stroke: #DDD;
+   stroke-width: 6px;
+   fill: none;
+   }
+   circle.node {
+   /*default color of a node */
+   fill: #bec6c6;
+   }
+   text.node {
+   font-size: 10px;
+   }
+   path.edge {
+   stroke-width: 1.5px;
+   stroke: green;
+   fill: none;
+   }
 </style>
 <body>
-<div class="row" style="margin-top: 50px;">
-<div class="col-md-1"></div>
-  <div class="col-md-6" style="border:1px solid #cecece; margin-bottom: 10px;">
-    <div class="container" >
-        
-        <div class="graph"></div> 
-
-    </div>
-  </div>
-  <div class="col-md-4" style="border:1px solid #cecece; margin-left: 20px; margin-top: 0px; ">
-    <!-- <div class="container"> -->
-        <!-- <div class="row"> -->
-            <!-- <div class="col-md-3" style="border:0px solid #cecece;" style="margin: 2px;"> -->
-                
-            <!-- </div> -->
-                <h3 class="text-center"><i>"A 4 bit chord system."</i></h3>
-                <hr />
-                <div id="option" class="text-center" style="margin-top: 0px;">
-
-                    <!-- <button type="button" class="btn btn-primary" value="Update" onclick="updateData()" style="margin: 10px;"> Update </button> -->
-                    <button type="button" class="btn btn-success" value="Update" onclick="addNode(0)" style="margin: 0px;"> Add Random Node </button>
-                    <button type="button" class="btn btn-warning" value="Update" onclick="deleteNode(0)" style="margin: 0px;"> Delete Random Node </button>
-                    <button type="button" class="btn btn-danger" value="Update" onclick="resset()" style="margin: 0px;"> Resset </button>
-            
-                </div>
-                <hr />
-                <div id="option" class="text-center" style="margin-top: 0px;">
-                    <h4> Add/Delete node by index number (0 - 15)</h4>
-                    <!-- <button type="button" class="btn btn-primary" value="Update" onclick="updateData()" style="margin: 10px;"> Update </button> -->
-                    <center><input type="text" class="form-control text-center" id="node_index" placeholder="node index (0 - 15)" style="margin: 5px; width: 50%;"></center>
-                    <button type="button" class="btn btn-success" value="Update" onclick="addNode(1)" style="margin: 0px;"> Add Specific Node </button>
-                    <button type="button" class="btn btn-warning" value="Update" onclick="deleteNode(1)" style="margin: 0px;"> Delete Specific Node </button>
-                    
-            
-                </div>
-                <hr />
-                <div class=container pull-center" style="margin: 0px;">
-                    <h4 style="margin-left: 15px;"> Delete data, enter previously stored data</h4>
-                    <form class="form-inline">
-                      <div class="form-group mx-sm-3 mb-2">
-                        <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
-                        <input type="text" class="form-control" id="text" placeholder="some text.....">
-                      </div>
-                      <button type="button" class="btn btn-primary" onclick="add_data()">Add Data</button>
-                      <button type="button" class="btn btn-danger" onclick="delete_data()">Delete Data</button>
-                    </form>
-                </div>
-                <hr />
-                <div class=container pull-center" style="margin: 0px;">
-                      <form class="form-inline">
-                      <div class="form-group mx-sm-3 mb-2">
-                        <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
-                        <input type="text" class="form-control" id="search_text" placeholder="some text.....">
-                      </div>
-                        <button type="button" class="btn btn-primary" onclick="search_data()">Search Data</button>
-                    </form>  
-                </div>
-                <hr />
-                <table class="table" id="table">
-                    <thead>
-                        <tr>
-                            <th data-field="no_de">Node [id]</th>
-                            <th data-field="responsible_of">Carries Data Of [node id]</th>
-                            <th data-field="_successor">Data/DataObj</th>
-                        </tr>
-                    </thead>
-                </table>
-                <script>
-                    $('#table').bootstrapTable({});
-                    function load(){
-                        var data = [];
-                        for (var node in _chord.chord_nodes)
-                        {   
-                            if(_chord.chord_nodes[node].predecessor != null){
-                                var temp = []
-                                for ( var datum in _chord.chord_nodes[node].data){
-                                    temp.push(_chord.chord_nodes[node].data[datum]);
-                                }
-                                data.push({
-                                    no_de: _chord.chord_nodes[node].name+" ["+_chord.chord_nodes[node].id+"]",
-                                    responsible_of: _chord.node_pre_nodes_index(_chord.chord_nodes[node].predecessor, _chord.chord_nodes[node]),
-                                    _successor: temp
-                                })
-                            }
-                            console.log(_chord.chord_nodes[node]);
+   <div class="row" style="margin-top: 50px;">
+      <div class="col-md-1"></div>
+      <div class="col-md-6" style="border:1px solid #cecece; margin-bottom: 10px;">
+         <div class="container" >
+            <div class="graph"></div>
+         </div>
+      </div>
+      <div class="col-md-4" style="border:1px solid #cecece; margin-left: 20px; margin-top: 0px; ">
+         <!-- <div class="container"> -->
+         <!-- <div class="row"> -->
+         <!-- <div class="col-md-3" style="border:0px solid #cecece;" style="margin: 2px;"> -->
+         <!-- </div> -->
+         <h3 class="text-center"><i>"A 4 bit chord system."</i></h3>
+         <hr />
+         <div id="option" class="text-center" style="margin-top: 0px;">
+            <!-- <button type="button" class="btn btn-primary" value="Update" onclick="updateData()" style="margin: 10px;"> Update </button> -->
+            <button type="button" class="btn btn-success" value="Update" onclick="addNode(0)" style="margin: 0px;"> Add Random Node </button>
+            <button type="button" class="btn btn-warning" value="Update" onclick="deleteNode(0)" style="margin: 0px;"> Delete Random Node </button>
+            <button type="button" class="btn btn-danger" value="Update" onclick="resset()" style="margin: 0px;"> Resset </button>
+         </div>
+         <hr />
+         <div id="option" class="text-center" style="margin-top: 0px;">
+            <h4> Add/Delete node by index number (0 - 15)</h4>
+            <!-- <button type="button" class="btn btn-primary" value="Update" onclick="updateData()" style="margin: 10px;"> Update </button> -->
+            <center><input type="text" class="form-control text-center" id="node_index" placeholder="node index (0 - 15)" style="margin: 5px; width: 50%;"></center>
+            <button type="button" class="btn btn-success" value="Update" onclick="addNode(1)" style="margin: 0px;"> Add Specific Node </button>
+            <button type="button" class="btn btn-warning" value="Update" onclick="deleteNode(1)" style="margin: 0px;"> Delete Specific Node </button>
+         </div>
+         <hr />
+         <div class=container pull-center" style="margin: 0px;">
+            <h4 style="margin-left: 15px;"> Delete data, enter previously stored data</h4>
+            <form class="form-inline">
+               <div class="form-group mx-sm-3 mb-2">
+                  <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+                  <input type="text" class="form-control" id="text" placeholder="some text.....">
+               </div>
+               <button type="button" class="btn btn-primary" onclick="add_data()">Add Data</button>
+               <button type="button" class="btn btn-danger" onclick="delete_data()">Delete Data</button>
+            </form>
+         </div>
+         <hr />
+         <div class=container pull-center" style="margin: 0px;">
+            <form class="form-inline">
+               <div class="form-group mx-sm-3 mb-2">
+                  <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+                  <input type="text" class="form-control" id="search_text" placeholder="some text.....">
+               </div>
+               <button type="button" class="btn btn-primary" onclick="search_data()">Search Data</button>
+            </form>
+         </div>
+         <hr />
+         <table class="table" id="table">
+            <thead>
+               <tr>
+                  <th data-field="no_de">Node [id]</th>
+                  <th data-field="responsible_of">Carries Data Of [node id]</th>
+                  <th data-field="_successor">Data/DataObj</th>
+               </tr>
+            </thead>
+         </table>
+         <script>
+            $('#table').bootstrapTable({});
+            function load(){
+                var data = [];
+                for (var node in _chord.chord_nodes)
+                {   
+                    if(_chord.chord_nodes[node].predecessor != null){
+                        var temp = []
+                        for ( var datum in _chord.chord_nodes[node].data){
+                            temp.push(_chord.chord_nodes[node].data[datum]);
                         }
-                        $('#table').bootstrapTable("load", data);
+                        data.push({
+                            no_de: _chord.chord_nodes[node].name+" ["+_chord.chord_nodes[node].id+"]",
+                            responsible_of: _chord.node_pre_nodes_index(_chord.chord_nodes[node].predecessor, _chord.chord_nodes[node]),
+                            _successor: temp
+                        })
                     }
-                </script>
-
-            
-    <!-- </div> -->
-  <!-- </div> -->
-<div class="col-md-1">
-</div>
-</div>
-</div>
-
-
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="./circleGraph.js"></script>
-<script type="text/javascript" src="./linkList.js"></script>
-
-<script>
-
-var radius = 210;
-var margin = 90;
-var outerRadius = radius + margin;
-const _chord = new Chord(16);
-
-
-
-function compute_hash (s) {
-    
-    for(var i=0, h=1; i<s.length; i++)
-        h=Math.imul(h+s.charCodeAt(i)|0, 2654435761);
-    return (h^h>>>17)>>>0;
-};
-
-function search_data(){
-
-    var data = $("#search_text").val();
-    if (data) {
-        var index = compute_hash(data)%16;
-        messaage = _chord.search_data(index, data)
-        if (messaage[0] == true) $.notify(messaage[1], "success");
-        else $.notify(messaage[1]);
-        $("#search_text").val("");
-    }
-    else alert("empty data field");
-
-
-}
-function delete_data(){
-    var data = $("#text").val();
-    if (data) {
-        var index = compute_hash(data)%16;
-        messaage = _chord.delete_data(index, data)
-        if (messaage[0] == true) $.notify("Data successfully deleted from node "+messaage[1], "success");
-        else $.notify(messaage[1]);
-        $("#text").val("");
-    }
-    else alert("empty data field");
-    load();
-}
-
-function add_data(data){
-
-    var data = $("#text").val();
-    if (data) {
-        var index = compute_hash(data)%16;
-        messaage = _chord.add_data(index, data)
-        if (messaage[0] == true) $.notify("Data successfully added to node "+messaage[1], "success");
-        else $.notify(messaage[1]);
-        $("#text").val("");
-    }
-    else alert("empty data field");
-    load();
-}
-
-function get_random_num(type){
-    // this function will return random number between 0 to 16 
-    // get the list of available id's of node
-
-    var list = _chord.available_node_id();
-    console.log(list[0], list[1]);
-    if (type == "add"){
-            
-        return list[1][Math.floor(Math.random() * list[1].length)];
-        // while(true){
-        //     var temp = Math.floor((Math.random() * 16) + 0);
-        //     if (list.includes(temp)) continue; 
-        //     else return temp;    
-        // }
-    }
-    else if (type == "delete"){
-        return list[0][Math.floor(Math.random() * list[0].length)];
-    }
-}
-
-function deleteNode(a){
-
-    console.log("Deleting random node");
-
-    var x;
-    if (a==0) x = get_random_num("delete");
-    else if (a==1) 
-        if ($("#node_index").val()=='') {
-                alert("Node index not provided");
-                return
+                    console.log(_chord.chord_nodes[node]);
+                }
+                $('#table').bootstrapTable("load", data);
             }
-        else 
-            {
-                x = $("#node_index").val();
-                x = parseInt(x);
-                if (x > 15) {alert("Invalid!! Index greater than 15"); return}
-            }
-
-    var messaage = _chord.delete_node(x);
-
-    if (messaage[0] == 1) $.notify(messaage[1], "success");
-    else if (messaage[0] == 2) $.notify("Your random node "+x+"("+_chord.chord_nodes[x].name+") "+messaage[1], "error");
-    updateData();
-
-} 
-
-function resset(){
-
-    for(var i =0; i<16 ; i++ ){
-        _chord.delete_node(i)
-    }
-    $.notify(
-      "Chord reset successfully, all data and nodes are deleted", 
-      // { position:"right" }
-    );
-    updateData();    
-}
-function addNode(a){
-
-    var x;
-    if (a==0) x = get_random_num("add");
-
-    else if (a==1) 
-        if ($("#node_index").val()=='') {
-                alert("Node index not provided");
-                return
-            }
-        else 
-            {
-                x = $("#node_index").val();
-                x = parseInt(x);
-                if (x > 15) {alert("Invalid!! Index greater than 15"); return}
-            }
-    var messaage = _chord.add_node(x);
-
-    if (messaage[0] == 1) $.notify(messaage[1], "success");
-    else if (messaage[0] == 2) $.notify("Your random node "+x+"("+_chord.chord_nodes[x].name+") "+messaage[1], "error");
-    updateData();
-
-}
-
-function getData(){
-
-    var nodes =  _chord.chord_nodes;
-    var no_of_nodes = 16; 
-
-    // find the edge lists
-    var edges = [];
-    for (var i = 0; i < 16; i++){
-        if(_chord.chord_nodes[i].successor){
-            console.log(_chord.chord_nodes[i].successor.name);
-            edges.push({ source: _chord.chord_nodes[i].name, target: _chord.chord_nodes[i].successor.name })
-        }
-    }
-
-    return [nodes, edges];
-}
-$( document ).ready(updateData());
-
-function updateData() {
-
-    // Create the layout
-    // d3.select(".graph").selectAll("text").remove()
-    load();
-    $(".graph").empty(); //clearing the previous content 
-    d3.select(".graph").selectAll("g > *").remove()
-    var data = getData(); 
-    var nodes = data[0];
-    var edges = data[1];
-    var circleGraph = d3.layout.circleGraph()
-      .tension(0.2)
-      .radius(radius)
-      .range(Math.PI * 3/1.5)
-      .nodes(nodes)
-      .edges(edges);
-
-    var svg = d3.select('.graph')
-      .append('svg')
-      .attr('width', outerRadius * 4)
-      .attr('height', outerRadius * 2)
-      .append('g')
-      .attr('transform', 'translate(' + outerRadius + ', ' + outerRadius + ')');
-    // draw main circle
-    svg.append('circle')
-      .classed('main-circle', true)
-      .attr('r', radius)
-      .style("stroke-dasharray","5,5");
-    // draw edges
-    svg.selectAll('path.edge')
-      .data(edges)
-      .enter()
-        .append('path')
-        // .style("stroke-dasharray","5,5") //this is to make dotted links
-        .classed('edge', true)
-        .attr('d', circleGraph.line);
-
-    // draw circles
-    svg.selectAll('circle.node')
-      .data(nodes)
-      .enter()
-        .append('circle')
-        .classed('node', true)
-        .attr('r', function (d, i){
-            return d.exist==1 ? 8 : 6;
-        })
-        .attr('cx', function (d) { return d.x; })
-        .attr('cy', function (d) { return d.y; })
-        .style("fill", function(d, i) {
-                        return d.exist==1 ? "red" : "#bec6c6";})
-        
-        
-    // draw labels
-    svg.selectAll('text.node')
-      .data(nodes)
-      .enter()
-        .append('text')
-        .classed('node', true)
-        .attr({
-          'text-anchor': function (d) {
-            return (Math.sin(d.radians) < 0) ? 'end' : 'begin';
-          },
-          dy: '0.3em',
-          dx: function(d) {
-            return (Math.sin(d.radians) < 0) ? '-1em' : '1em';
-          },
-          transform: function (d) {
-            var degrees = d.degrees - 90;
-            var xTranslate = radius;
-            if (Math.sin(d.radians) < 0) {
-              degrees -= 180;
-              xTranslate *= -1;
-            }
-            return 'rotate(' + degrees + ') translate(' + xTranslate + ', 0)';
+         </script>
+         <!-- </div> -->
+         <!-- </div> -->
+         <div class="col-md-1"></div>
+      </div>
+   </div>
+   <script src="http://d3js.org/d3.v3.min.js"></script>
+   <script src="./circleGraph.js"></script>
+   <script type="text/javascript" src="./linkList.js"></script>
+   <script>
+      var radius = 210;
+      var margin = 90;
+      var outerRadius = radius + margin;
+      const _chord = new Chord(16);
+      
+      
+      
+      function compute_hash (s) {
+          
+          for(var i=0, h=1; i<s.length; i++)
+              h=Math.imul(h+s.charCodeAt(i)|0, 2654435761);
+          return (h^h>>>17)>>>0;
+      };
+      
+      function search_data(){
+      
+          var data = $("#search_text").val();
+          if (data) {
+              var index = compute_hash(data)%16;
+              messaage = _chord.search_data(index, data)
+              if (messaage[0] == true) $.notify(messaage[1], "success");
+              else $.notify(messaage[1]);
+              $("#search_text").val("");
           }
-        })
-        .text(function(d) {
-            var node_name = d.name+" ["+d.id+"] ";
-          return node_name;
-        });
-};
-</script>
+          else alert("empty data field");
+      
+      
+      }
+      function delete_data(){
+          var data = $("#text").val();
+          if (data) {
+              var index = compute_hash(data)%16;
+              messaage = _chord.delete_data(index, data)
+              if (messaage[0] == true) $.notify("Data successfully deleted from node "+messaage[1], "success");
+              else $.notify(messaage[1]);
+              $("#text").val("");
+          }
+          else alert("empty data field");
+          load();
+      }
+      
+      function add_data(data){
+      
+          var data = $("#text").val();
+          if (data) {
+              var index = compute_hash(data)%16;
+              messaage = _chord.add_data(index, data)
+              if (messaage[0] == true) $.notify("Data successfully added to node "+messaage[1], "success");
+              else $.notify(messaage[1]);
+              $("#text").val("");
+          }
+          else alert("empty data field");
+          load();
+      }
+      
+      function get_random_num(type){
+          // this function will return random number between 0 to 16 
+          // get the list of available id's of node
+      
+          var list = _chord.available_node_id();
+          console.log(list[0], list[1]);
+          if (type == "add"){
+                  
+              return list[1][Math.floor(Math.random() * list[1].length)];
+              // while(true){
+              //     var temp = Math.floor((Math.random() * 16) + 0);
+              //     if (list.includes(temp)) continue; 
+              //     else return temp;    
+              // }
+          }
+          else if (type == "delete"){
+              return list[0][Math.floor(Math.random() * list[0].length)];
+          }
+      }
+      
+      function deleteNode(a){
+      
+          console.log("Deleting random node");
+      
+          var x;
+          if (a==0) x = get_random_num("delete");
+          else if (a==1) 
+              if ($("#node_index").val()=='') {
+                      alert("Node index not provided");
+                      return
+                  }
+              else 
+                  {
+                      x = $("#node_index").val();
+                      x = parseInt(x);
+                      if (x > 15) {alert("Invalid!! Index greater than 15"); return}
+                  }
+      
+          var messaage = _chord.delete_node(x);
+      
+          if (messaage[0] == 1) $.notify(messaage[1], "success");
+          else if (messaage[0] == 2) $.notify("Your random node "+x+"("+_chord.chord_nodes[x].name+") "+messaage[1], "error");
+          updateData();
+      
+      } 
+      
+      function resset(){
+      
+          for(var i =0; i<16 ; i++ ){
+              _chord.delete_node(i)
+          }
+          $.notify(
+            "Chord reset successfully, all data and nodes are deleted", 
+            // { position:"right" }
+          );
+          updateData();    
+      }
+      function addNode(a){
+      
+          var x;
+          if (a==0) x = get_random_num("add");
+      
+          else if (a==1) 
+              if ($("#node_index").val()=='') {
+                      alert("Node index not provided");
+                      return
+                  }
+              else 
+                  {
+                      x = $("#node_index").val();
+                      x = parseInt(x);
+                      if (x > 15) {alert("Invalid!! Index greater than 15"); return}
+                  }
+          var messaage = _chord.add_node(x);
+      
+          if (messaage[0] == 1) $.notify(messaage[1], "success");
+          else if (messaage[0] == 2) $.notify("Your random node "+x+"("+_chord.chord_nodes[x].name+") "+messaage[1], "error");
+          updateData();
+      
+      }
+      
+      function getData(){
+      
+          var nodes =  _chord.chord_nodes;
+          var no_of_nodes = 16; 
+      
+          // find the edge lists
+          var edges = [];
+          for (var i = 0; i < 16; i++){
+              if(_chord.chord_nodes[i].successor){
+                  console.log(_chord.chord_nodes[i].successor.name);
+                  edges.push({ source: _chord.chord_nodes[i].name, target: _chord.chord_nodes[i].successor.name })
+              }
+          }
+      
+          return [nodes, edges];
+      }
+      $( document ).ready(updateData());
+      
+      function updateData() {
+      
+          // Create the layout
+          // d3.select(".graph").selectAll("text").remove()
+          load();
+          $(".graph").empty(); //clearing the previous content 
+          d3.select(".graph").selectAll("g > *").remove()
+          var data = getData(); 
+          var nodes = data[0];
+          var edges = data[1];
+          var circleGraph = d3.layout.circleGraph()
+            .tension(0.2)
+            .radius(radius)
+            .range(Math.PI * 3/1.5)
+            .nodes(nodes)
+            .edges(edges);
+      
+          var svg = d3.select('.graph')
+            .append('svg')
+            .attr('width', outerRadius * 4)
+            .attr('height', outerRadius * 2)
+            .append('g')
+            .attr('transform', 'translate(' + outerRadius + ', ' + outerRadius + ')');
+          // draw main circle
+          svg.append('circle')
+            .classed('main-circle', true)
+            .attr('r', radius)
+            .style("stroke-dasharray","5,5");
+          // draw edges
+          svg.selectAll('path.edge')
+            .data(edges)
+            .enter()
+              .append('path')
+              // .style("stroke-dasharray","5,5") //this is to make dotted links
+              .classed('edge', true)
+              .attr('d', circleGraph.line);
+      
+          // draw circles
+          svg.selectAll('circle.node')
+            .data(nodes)
+            .enter()
+              .append('circle')
+              .classed('node', true)
+              .attr('r', function (d, i){
+                  return d.exist==1 ? 8 : 6;
+              })
+              .attr('cx', function (d) { return d.x; })
+              .attr('cy', function (d) { return d.y; })
+              .style("fill", function(d, i) {
+                              return d.exist==1 ? "red" : "#bec6c6";})
+              
+              
+          // draw labels
+          svg.selectAll('text.node')
+            .data(nodes)
+            .enter()
+              .append('text')
+              .classed('node', true)
+              .attr({
+                'text-anchor': function (d) {
+                  return (Math.sin(d.radians) < 0) ? 'end' : 'begin';
+                },
+                dy: '0.3em',
+                dx: function(d) {
+                  return (Math.sin(d.radians) < 0) ? '-1em' : '1em';
+                },
+                transform: function (d) {
+                  var degrees = d.degrees - 90;
+                  var xTranslate = radius;
+                  if (Math.sin(d.radians) < 0) {
+                    degrees -= 180;
+                    xTranslate *= -1;
+                  }
+                  return 'rotate(' + degrees + ') translate(' + xTranslate + ', 0)';
+                }
+              })
+              .text(function(d) {
+                  var node_name = d.name+" ["+d.id+"] ";
+                return node_name;
+              });
+      };
+   </script>
