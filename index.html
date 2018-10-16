@@ -135,17 +135,13 @@
       var outerRadius = radius + margin;
       const _chord = new Chord(16);
       
-      
-      
-      function compute_hash (s) {
-          
+      function compute_hash (s) {    
           for(var i=0, h=1; i<s.length; i++)
               h=Math.imul(h+s.charCodeAt(i)|0, 2654435761);
           return (h^h>>>17)>>>0;
       };
       
       function search_data(){
-      
           var data = $("#search_text").val();
           if (data) {
               var index = compute_hash(data)%16;
@@ -158,6 +154,7 @@
       
       
       }
+      
       function delete_data(){
           var data = $("#text").val();
           if (data) {
@@ -172,7 +169,6 @@
       }
       
       function add_data(data){
-      
           var data = $("#text").val();
           if (data) {
               var index = compute_hash(data)%16;
@@ -192,13 +188,7 @@
           var list = _chord.available_node_id();
           console.log(list[0], list[1]);
           if (type == "add"){
-                  
               return list[1][Math.floor(Math.random() * list[1].length)];
-              // while(true){
-              //     var temp = Math.floor((Math.random() * 16) + 0);
-              //     if (list.includes(temp)) continue; 
-              //     else return temp;    
-              // }
           }
           else if (type == "delete"){
               return list[0][Math.floor(Math.random() * list[0].length)];
@@ -224,7 +214,6 @@
                   }
       
           var messaage = _chord.delete_node(x);
-      
           if (messaage[0] == 1) $.notify(messaage[1], "success");
           else if (messaage[0] == 2) $.notify("Your random node "+x+"("+_chord.chord_nodes[x].name+") "+messaage[1], "error");
           updateData();
@@ -232,7 +221,6 @@
       } 
       
       function resset(){
-      
           for(var i =0; i<16 ; i++ ){
               _chord.delete_node(i)
           }
@@ -242,8 +230,8 @@
           );
           updateData();    
       }
-      function addNode(a){
       
+      function addNode(a){
           var x;
           if (a==0) x = get_random_num("add");
       
@@ -267,7 +255,6 @@
       }
       
       function getData(){
-      
           var nodes =  _chord.chord_nodes;
           var no_of_nodes = 16; 
       
@@ -285,9 +272,7 @@
       $( document ).ready(updateData());
       
       function updateData() {
-      
           // Create the layout
-          // d3.select(".graph").selectAll("text").remove()
           load();
           $(".graph").empty(); //clearing the previous content 
           d3.select(".graph").selectAll("g > *").remove()
